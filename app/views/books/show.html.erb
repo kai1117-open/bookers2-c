@@ -1,0 +1,107 @@
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-3'>
+      <h2>User info</h2>
+      <%= render 'users/info', user: @user  %>
+      
+      <h2 class="mt-3">New book</h2>
+      
+<%= form_with model: @book,local:true do |f| %>
+  <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: 'form-control book_title' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :opinion %>
+    <%= f.text_area :body, class: 'form-control book_body' %>
+  </div>
+  <div class="form-group">
+    <%= f.submit class: 'btn btn-success' %>
+  </div>
+<% end %>
+      
+    </div>
+    
+    
+    
+    <div class='col-md-8 offset-md-1'>
+  		<h2>Book detail</h2>
+  		<table class='table'>
+  		  <tr>
+          <td><%= link_to(@existing_book.user) do %>
+            <%= image_tag @existing_book.user.get_profile_image, size: "100x100"%><br>
+            <%= @existing_book.user.name %>
+            <% end %>
+          </td>
+          
+          <td><%= link_to @existing_book.title, @existing_book %></td>
+          
+          <td><%= @existing_book.body %></td>
+          
+          <td>
+            
+ <% if @existing_book.favorited_by?(current_user) %>
+  <p>
+    <%= link_to "♥ #{@existing_book.favorites.count} いいね", book_favorites_path(@existing_book), method: :delete, class: "btn btn-danger" %>
+  </p>
+<% else %>
+  <p>
+    <%= link_to "♡ #{@existing_book.favorites.count} いいね", book_favorites_path(@existing_book), method: :post, class: "btn btn-success" %>
+  </p>
+<% end %>
+            
+            
+          </td>
+          
+          <% if current_user == @existing_book.user %>
+          
+            <td><%= link_to 'Edit', edit_book_path(@existing_book), class: "btn btn-sm btn-success" %></td>
+            
+            <td><%= link_to 'Destroy', @existing_book, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%></td>
+            
+          <% end %>  
+            
+        </tr>
+      </table>
+      
+<div>
+ <p class="font-weight-bold">コメント件数：<%= @existing_book.book_comments.count %></p>
+  <% @existing_book.book_comments.each do |book_comment| %>
+    <div class="border-bottom mb-3 pb-2">
+      <div class="d-flex align-items-center">
+        <%= image_tag book_comment.user.get_profile_image, alt: "#{book_comment.user.name}のプロフィール画像", size: "50x50", class: "rounded-circle me-2" %>
+        <div>
+          <strong><%= book_comment.user.name %></strong>
+          <span class="text-muted d-block"><%= book_comment.created_at.strftime('%Y/%m/%d') %></span>
+          <p class="mb-0"><%= book_comment.comment %></p>
+        </div>
+        
+        <% if book_comment.user_id == current_user.id %>
+          <div class="ms-auto">
+            <%= link_to '削除', book_book_comment_path(@existing_book, book_comment), method: :delete, data: { confirm: 'このコメントを削除しますか？' }, class: "btn btn-danger btn-sm" %>
+          </div>
+        <% end %>
+        
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div>
+  <%= form_with(model: [@existing_book, @book_comment], local: true) do |f| %>
+    <div class="form-group">
+      <%= f.text_area :comment, rows: '5', placeholder: "コメントをここに", class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.submit "送信する", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+      
+      
+      
+      
+    </div>
+  </div>
+</div>
