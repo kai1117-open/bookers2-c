@@ -26,7 +26,8 @@
               <%= link_to "♡ #{book.favorites.count} いいね", book_favorites_path(book), method: :post, class: "btn btn-success" %>
             </p>
           <% end %>
-          
+        </td>
+        <td>
           <p class="font-weight-bold">コメント件数：<%= book.book_comments.count %></p>
         </td>
       </tr>
