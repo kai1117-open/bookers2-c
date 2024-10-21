@@ -52,7 +52,9 @@
             <td><%= link_to 'Destroy', @existing_book, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%></td>
             
           <% end %>  
-            
+          <td>
+            <p><%= @existing_book.impressionist_count %> Views</p>
+          </td>  
         </tr>
       </table>
  

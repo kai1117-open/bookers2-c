@@ -5,12 +5,12 @@ class Book < ApplicationRecord
   validates :title,presence:true
   validates :body,presence:true,length:{maximum:200}
   has_many :week_favorites, -> { where(created_at: 1.week.ago.beginning_of_day..Time.current.end_of_day) }, class_name: 'Favorite'
-    
+  is_impressionable
   def favorited_by?(user)
     favorites.exists?(user_id: user.id)
   end
-  
-  
+
+
   def self.search_for(content, method)
     if method == 'perfect'
       Book.where(title: content)
@@ -22,5 +22,5 @@ class Book < ApplicationRecord
       Book.where('name LIKE ?', '%' + content + '%')
     end
   end
-  
+
 end

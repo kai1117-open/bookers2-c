@@ -3,9 +3,11 @@ class BooksController < ApplicationController
 
   def show
   @existing_book = Book.find(params[:id])
+  impressionist(@existing_book) # 閲覧数をカウント
   @user = @existing_book.user # ここで関連するユーザーを取得
   @book = Book.new
   @book_comment = BookComment.new
+  
   end
 
   def index
