@@ -1,0 +1,43 @@
+<h2 id="room" >
+  <%= @user.name %> さんとのチャット
+</h2>
+
+<!-- チャットメッセージを表示するコンテナ -->
+<div class="message" style="width: 400px;">
+  <!-- チャットメッセージの配列をループ -->
+  <% @chats.each do |chat| %>
+    <!-- メッセージが現在のユーザーからのものであれば -->
+    <% if chat.user_id == current_user.id %>
+      <!-- 自分のメッセージを部分テンプレートで表示 -->
+      <%= render "chats/chat", chat: chat %>
+    <% else %>
+      <!-- 相手のメッセージの場合 -->
+      <div class="left-container d-flex">
+        <!-- 相手のプロフィール画像を表示 -->
+        <%= image_tag @user.get_profile_image, size: '30x30', style: 'border-radius: 50%' %>
+        <!-- メッセージ内容を表示 -->
+        <p class=ml-1 style="text-align: left;">
+          <span style="background-color: #F5F5DC; padding: 5px; border-radius: 10px;">
+            <%= chat.message %>
+          </span>
+        </p>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<!-- エラーメッセージを表示するためのコンテナ -->
+<div class="errors">
+  <!-- フォームのエラーを表示 -->
+  <%= render "layouts/errors", obj: @chat %>
+</div>
+
+<!-- メッセージ送信フォーム -->
+<%= form_with model: @chat, data: {remote: true} do |f| %>
+  <!-- メッセージ入力フィールド -->
+  <%= f.text_field :message %>
+  <!-- 送信ボタン -->
+  <%= f.submit "送信", class: "btn btn-dark btn-sm" %>
+  <!-- 隠しフィールドとしてチャットルームIDを送信 -->
+  <%= f.hidden_field :room_id %>
+<% end %>
