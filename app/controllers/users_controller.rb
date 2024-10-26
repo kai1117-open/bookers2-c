@@ -7,19 +7,11 @@ before_action :ensure_correct_user, only: [:edit, :update]
     @total_views = @user.books.sum(&:impressionist_count)
     @book = Book.new
     
-  today = Date.today
-  yesterday = today - 1
-  start_of_week = today.beginning_of_week
-  start_of_last_week = start_of_week - 1.week
-    
-  @today_books_count = @user.books.where(created_at: today.all_day).count
-  @yesterday_books_count = @user.books.where(created_at: yesterday.all_day).count
-  @weekly_books_count = @user.books.where(created_at: start_of_week..today).count
-  @last_week_books_count = @user.books.where(created_at: start_of_last_week..start_of_week - 1.day).count
+    @today_book =  @books.created_today
+    @yesterday_book = @books.created_yesterday
+    @this_week_book = @books.created_this_week
+    @last_week_book = @books.created_last_week
 
-  @difference_today_yesterday = @today_books_count - @yesterday_books_count
-  @difference_weekly = @weekly_books_count - @last_week_books_count
-  
   end
   
 

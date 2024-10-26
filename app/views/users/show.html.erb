@@ -9,13 +9,7 @@
     <div class='col-md-8 offset-md-1'>
       <h2>Books</h2><p class="mr-3">total_views:<%= @total_views %></p>
       <%= render 'books/index',books: @books %>
-      
-      <p>今日の投稿数: <%= @today_books_count %></p>
-      <p>前日の投稿数: <%= @yesterday_books_count %></p>
-      <p>前日と今日の投稿数の差: <%= @difference_today_yesterday %></p>
-      <p>今週の投稿数の合計: <%= @weekly_books_count %></p>
-      <p>先週の投稿数の合計: <%= @last_week_books_count %></p>
-      <p>今週と先週の投稿数の差: <%= @difference_weekly %></p>
+      <%= render 'book_index',books: @books %>
     </div>
   </div>
 </div>
