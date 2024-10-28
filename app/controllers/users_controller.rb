@@ -11,8 +11,24 @@ before_action :ensure_correct_user, only: [:edit, :update]
     @yesterday_book = @books.created_yesterday
     @this_week_book = @books.created_this_week
     @last_week_book = @books.created_last_week
-
+    
+      @daily_books = (0..6).map do |i|
+        day = i.days.ago.to_date
+        { date: day.strftime("%Y-%m-%d"), count: @user.books.created_on(day).count }
+      end
   end
+  
+    def check_daily_books
+      @user = User.find(params[:id])
+      date = params[:date].to_date
+      @book_count = @user.books.created_on(date).count
+    
+      respond_to do |format|
+        format.js
+      end
+    end  
+  
+  
   
 
   def index
