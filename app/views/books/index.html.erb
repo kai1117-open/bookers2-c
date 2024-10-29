@@ -15,6 +15,11 @@
       <h2>Books</h2>
       
       
+      <div class="sort-options mb-3">
+        <%= link_to "新着順", books_path(sort: "new"), class: "btn btn-primary" %>
+        <%= link_to "評価順", books_path(sort: "rating"), class: "btn btn-primary" %>
+        <%= link_to "お気に入り順", books_path, class: "btn btn-primary" %> <!-- デフォルトでお気に入り順 -->
+      </div>
       <%= render 'index', books: @books%>
       
       

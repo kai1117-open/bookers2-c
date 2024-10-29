@@ -22,23 +22,6 @@
     <h4>評価</h4>
     <div id="post_raty"></div>
     <%= f.hidden_field :score, id: 'rating-score' %> <!-- 隠しフィールドを追加 -->
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        let elem = document.querySelector('#post_raty');
-        let opt = {
-          starOn: "<%= image_path('star-on.png') %>",
-          starOff: "<%= image_path('star-off.png') %>",
-          starHalf: "<%= image_path('star-half.png') %>",
-          half: true,
-          scoreName: 'score',
-          click: function(score) {
-            document.getElementById('rating-score').value = score; // 選択したスコアを隠しフィールドに設定
-          }
-        };
-        raty(elem, opt);
-      });
-    </script>
   <% end %>
 
   <div class="form-group">
