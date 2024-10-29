@@ -1,0 +1,10 @@
+            <% if book.score.present? %>
+              <p>評価: <%= book.score %> / 5</p>
+              <div class="ratings">
+                <% (1..5).each do |i| %>
+                  <%= image_tag(i <= book.score ? 'star-on.png' : 'star-off.png') %>
+                <% end %>
+              </div>
+            <% else %>
+              <p>未評価</p>
+            <% end %>

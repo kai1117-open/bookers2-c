@@ -19,7 +19,7 @@ before_action :ensure_correct_user, only: [:edit, :update]
   end
   
     def check_daily_books
-      @user = User.find(params[:id])
+      @user = User.includes(:books).find(params[:id])
       date = params[:date].to_date
       @book_count = @user.books.created_on(date).count
     

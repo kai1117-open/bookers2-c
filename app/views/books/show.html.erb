@@ -5,29 +5,13 @@
       <%= render 'users/info', user: @user  %>
       
       <h2 class="mt-3">New book</h2>
-      
-<%= form_with model: @book,local:true do |f| %>
-  <div class="form-group">
-    <%= f.label :title %>
-    <%= f.text_field :title, class: 'form-control book_title' %>
-  </div>
-  <div class="form-group">
-    <%= f.label :opinion %>
-    <%= f.text_area :body, class: 'form-control book_body' %>
-  </div>
-  <div class="form-group">
-    <%= f.submit class: 'btn btn-success' %>
-  </div>
-<% end %>
-      
+      <%= render 'form', book: @book %>
     </div>
     
-    
-    
     <div class='col-md-8 offset-md-1'>
-  		<h2>Book detail</h2>
-  		<table class='table'>
-  		  <tr>
+      <h2>Book detail</h2>
+      <table class='table'>
+        <tr>
           <td><%= link_to(@existing_book.user) do %>
             <%= image_tag @existing_book.user.get_profile_image, size: "100x100"%><br>
             <%= @existing_book.user.name %>
@@ -35,45 +19,36 @@
           </td>
           
           <td><%= link_to @existing_book.title, @existing_book %></td>
-          
           <td><%= @existing_book.body %></td>
-          
           <td id="favorite_btn_<%= @existing_book.id %>">
-            
-<%= render 'favorites/favorite-btn', book: @existing_book %>
-            
-            
+            <%= render 'favorites/favorite-btn', book: @existing_book %>
           </td>
           
           <% if current_user == @existing_book.user %>
-          
             <td><%= link_to 'Edit', edit_book_path(@existing_book), class: "btn btn-sm btn-success" %></td>
-            
             <td><%= link_to 'Destroy', @existing_book, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%></td>
-            
           <% end %>  
           <td>
             <p><%= @existing_book.impressionist_count %> Views</p>
           </td>  
         </tr>
+        <tr>
+          <td colspan="7">
+            <h4>評価</h4>
+            <%= render 'layouts/score', book: @existing_book %>
+          </td>
+        </tr>          
       </table>
  
- 
-      
-<div id="comment_index">
-  <%= render "book_comments/index", book: @existing_book %>
-</div>
+      <div id="comment_index">
+        <%= render "book_comments/index", book: @existing_book %>
+      </div>
 
-
-
-<div>
-  <%= render "book_comments/form", book: @existing_book, book_comment: @book_comment %>
-</div>
-
-      
-      
-      
-      
+      <div>
+        <%= render "book_comments/form", book: @existing_book, book_comment: @book_comment %>
+      </div>
     </div>
   </div>
 </div>
+
+<%= javascript_pack_tag 'application' %> <!-- JavaScript を読み込む -->

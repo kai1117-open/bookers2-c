@@ -2,7 +2,9 @@
 import Chart from 'chart.js/auto'; 
 
 document.addEventListener('turbolinks:load', () => {
+  
   const canvas = document.getElementById('daily-books-chart');
+  
   const dailyBooksDataDiv = document.getElementById('daily-books-data');
 
   if (canvas && dailyBooksDataDiv) {
