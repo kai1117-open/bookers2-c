@@ -1,0 +1,13 @@
+<h1><%= @tag %>に関連する本</h1>
+
+<% if @books.any? %>
+  <% @books.each do |book| %>
+    <div class="book-item">
+      <h2>本の名前：<%= link_to book.title, book_path(book) %></h2>
+      <p>感想：<%= book.body %></p> <!-- descriptionをbodyに変更 -->
+      <!-- 他に表示したい情報を追加 -->
+    </div>
+  <% end %>
+<% else %>
+  <p>このタグに関連する本はありません。</p>
+<% end %>

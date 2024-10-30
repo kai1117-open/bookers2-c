@@ -11,23 +11,34 @@ class BooksController < ApplicationController
   
   end
 
-  def index
-    to = Time.current.at_end_of_day
-    from = (to - 6.day).at_beginning_of_day
-    
+  def tag
+    @tag = params[:tag]
+    @books = Book.tagged_with(@tag)
+  end
+
+
+def index
+  to = Time.current.at_end_of_day
+  from = (to - 6.day).at_beginning_of_day
+
+  # タグ検索機能
+  if params[:tag_name].present?
+    @books = Book.tagged_with(params[:tag_name])
+  else
     # 並び替え条件に応じて異なる並び替えを実行
     @books = case params[:sort]
              when "rating"
-               Book.order(score: :desc)
+               Book.includes(:tags).order(score: :desc)
              when "new"
-               Book.order(created_at: :desc)
+               Book.includes(:tags).order(created_at: :desc)
              else
                # お気に入り順（デフォルト）
-               Book.includes(:week_favorites).sort_by { |book| -book.week_favorites.count }
+               Book.includes(:tags, :week_favorites).sort_by { |book| -book.week_favorites.count }
              end
-
-    @book = Book.new
   end
+
+  @book = Book.new
+end
 
   def create
     @book = Book.new(book_params)

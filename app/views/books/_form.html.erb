@@ -13,9 +13,27 @@
 
 <div class="form-group form-group_tags">
   <%= f.label :tag_list, "Tag", class: "form-label" %>
-  <%= f.text_field :tag_list, value: @book.tag_list.join(","), class: "form-control", data: { role: "tagsinput" } %>
+  <%= f.text_field :tag_list, value: @book.tag_list.join(","), class: "form-control", data: { role: "tagsinput" }, id: "tag-list-input" %>
+  <small class="form-text text-muted">各タグは7文字以下で入力してください</small>
 </div>
 
+<script>
+  document.addEventListener("turbolinks:load", function() {
+    const tagInput = document.getElementById("tag-list-input");
+    
+    tagInput.addEventListener("input", function() {
+      let tags = tagInput.value.split(",");
+      tags = tags.map(tag => tag.trim()); // 各タグの前後の空白を除去
+      let validTags = tags.filter(tag => tag.length <= 7); // 7文字以下のタグのみ有効
+      
+      if (validTags.length < tags.length) {
+        alert("各タグは7文字以下で入力してください。");
+      }
+      
+      tagInput.value = validTags.join(", ");
+    });
+  });
+</script>
 
 
   <!-- 現在の評価が存在するか確認 -->
@@ -35,5 +53,13 @@
 
   <div class="form-group">
     <%= f.submit class: 'btn btn-success' %>
+  </div>
+<% end %>
+
+<%= form_with url: books_path, method: :get, local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :tag_name, "タグで絞り込む", class: "form-label" %>
+    <%= f.text_field :tag_name, value: params[:tag_name], class: "form-control", placeholder: "タグを入力" %>
+    <%= f.submit "検索", class: "btn btn-primary mt-2" %>
   </div>
 <% end %>

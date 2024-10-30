@@ -10,6 +10,7 @@ resources :books, only: [:index, :show, :edit, :create, :destroy, :update] do
   resources :book_comments, only: [:create, :destroy]
   resource :favorites, only: [:create, :destroy]
   resources :ratings
+  get 'tags/:tag', to: 'books#tag', as: :tag, on: :collection
 end
 
   resources :users, only: [:index,:show,:edit,:update]  do
