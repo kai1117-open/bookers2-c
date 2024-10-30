@@ -3,6 +3,8 @@ class Book < ApplicationRecord
   has_many :favorites, dependent: :destroy
   has_many :book_comments, dependent: :destroy
   has_many :ratings, dependent: :destroy
+  acts_as_taggable_on :tags
+  
   validates :title,presence:true
   validates :body,presence:true,length:{maximum:200}
   has_many :week_favorites, -> { where(created_at: 1.week.ago.beginning_of_day..Time.current.end_of_day) }, class_name: 'Favorite'

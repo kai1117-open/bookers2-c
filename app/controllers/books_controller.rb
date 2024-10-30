@@ -5,6 +5,7 @@ class BooksController < ApplicationController
   @existing_book = Book.find(params[:id])
   impressionist(@existing_book) # 閲覧数をカウント
   @user = @existing_book.user # ここで関連するユーザーを取得
+  @tags = @existing_book.tag_counts_on(:tags)
   @book = Book.new
   @book_comment = BookComment.new
   
@@ -61,7 +62,7 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :body, :score)
+    params.require(:book).permit(:title, :body, :score, :tag_list)
   end
   
   def ensure_correct_user

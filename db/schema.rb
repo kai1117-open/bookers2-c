@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_29_002322) do
+ActiveRecord::Schema.define(version: 2024_10_29_235622) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -55,6 +55,13 @@ ActiveRecord::Schema.define(version: 2024_10_29_002322) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.float "score"
+  end
+
+  create_table "books_tags", id: false, force: :cascade do |t|
+    t.integer "book_id", null: false
+    t.integer "tag_id", null: false
+    t.index ["book_id"], name: "index_books_tags_on_book_id"
+    t.index ["tag_id"], name: "index_books_tags_on_tag_id"
   end
 
   create_table "chats", force: :cascade do |t|
@@ -122,6 +129,35 @@ ActiveRecord::Schema.define(version: 2024_10_29_002322) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "taggings", force: :cascade do |t|
+    t.integer "tag_id"
+    t.string "taggable_type"
+    t.integer "taggable_id"
+    t.string "tagger_type"
+    t.integer "tagger_id"
+    t.string "context", limit: 128
+    t.datetime "created_at"
+    t.string "tenant", limit: 128
+    t.index ["context"], name: "index_taggings_on_context"
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+    t.index ["taggable_id", "taggable_type", "context"], name: "taggings_taggable_context_idx"
+    t.index ["taggable_id", "taggable_type", "tagger_id", "context"], name: "taggings_idy"
+    t.index ["taggable_id"], name: "index_taggings_on_taggable_id"
+    t.index ["taggable_type", "taggable_id"], name: "index_taggings_on_taggable_type_and_taggable_id"
+    t.index ["taggable_type"], name: "index_taggings_on_taggable_type"
+    t.index ["tagger_id", "tagger_type"], name: "index_taggings_on_tagger_id_and_tagger_type"
+    t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
+    t.index ["tagger_type", "tagger_id"], name: "index_taggings_on_tagger_type_and_tagger_id"
+    t.index ["tenant"], name: "index_taggings_on_tenant"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "taggings_count", default: 0
+  end
+
   create_table "user_rooms", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "room_id", null: false
@@ -145,12 +181,7 @@ ActiveRecord::Schema.define(version: 2024_10_29_002322) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "chats", "rooms"
-  add_foreign_key "chats", "users"
-  add_foreign_key "ratings", "books"
-  add_foreign_key "ratings", "users"
+  add_foreign_key "taggings", "tags"
   add_foreign_key "user_rooms", "rooms"
   add_foreign_key "user_rooms", "users"
 end

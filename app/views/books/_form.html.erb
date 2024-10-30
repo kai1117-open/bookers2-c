@@ -9,6 +9,15 @@
     <%= f.text_area :body, class: 'form-control book_body' %>
   </div>
 
+
+
+<div class="form-group form-group_tags">
+  <%= f.label :tag_list, "Tag", class: "form-label" %>
+  <%= f.text_field :tag_list, value: @book.tag_list.join(","), class: "form-control", data: { role: "tagsinput" } %>
+</div>
+
+
+
   <!-- 現在の評価が存在するか確認 -->
   <% if @book.score.present? %>
     <h4>現在の評価</h4>
