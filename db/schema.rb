@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_29_235622) do
+ActiveRecord::Schema.define(version: 2024_11_10_235059) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -54,14 +54,7 @@ ActiveRecord::Schema.define(version: 2024_10_29_235622) do
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.float "score"
-  end
-
-  create_table "books_tags", id: false, force: :cascade do |t|
-    t.integer "book_id", null: false
-    t.integer "tag_id", null: false
-    t.index ["book_id"], name: "index_books_tags_on_book_id"
-    t.index ["tag_id"], name: "index_books_tags_on_tag_id"
+    t.integer "score"
   end
 
   create_table "chats", force: :cascade do |t|
@@ -105,16 +98,6 @@ ActiveRecord::Schema.define(version: 2024_10_29_235622) do
     t.index ["impressionable_type", "impressionable_id", "session_hash"], name: "poly_session_index"
     t.index ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index"
     t.index ["user_id"], name: "index_impressions_on_user_id"
-  end
-
-  create_table "ratings", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "book_id", null: false
-    t.integer "score"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["book_id"], name: "index_ratings_on_book_id"
-    t.index ["user_id"], name: "index_ratings_on_user_id"
   end
 
   create_table "relationships", force: :cascade do |t|
@@ -181,6 +164,10 @@ ActiveRecord::Schema.define(version: 2024_10_29_235622) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "chats", "rooms"
+  add_foreign_key "chats", "users"
   add_foreign_key "taggings", "tags"
   add_foreign_key "user_rooms", "rooms"
   add_foreign_key "user_rooms", "users"
