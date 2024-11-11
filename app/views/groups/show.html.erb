@@ -1,0 +1,53 @@
+<!-- グループ詳細画面 -->
+
+
+
+<div class='container px-5 px-sm-0'>
+<div class="row">
+  <div class="col-md-3">
+    <h2>User info</h2>
+    <%= render 'users/info', user: current_user %>
+  </div>
+
+  <div class="col-md-8 offset-md-1">
+      <h2>グループ詳細画面</h2>
+      <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <%= link_to 'グループを作成', new_group_path, class: 'nav-link text-muted' %>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'グループ一覧', groups_path, class: 'nav-link text-muted' %>
+      </li>
+    </ul>
+
+      <h1><%= @group.name %></h1>
+      <% if @group.members.exclude?(current_user) %>
+        <%= button_to 'Join this group', group_memberships_path(group_id: @group.id), method: :post %>
+      <% else %>
+        <%= button_to 'Leave this group', group_membership_path(group_id: @group.id), method: :delete %>
+      <% end %>
+
+
+
+<h2>参加ユーザー</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ユーザー名</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @members.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+  </div>
+
+
+
+</div>
+</div>

@@ -10,7 +10,17 @@
 </div>
 
 <div class="col-md-8 offset-md-1">
+
 <h2>Users</h2>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <%= link_to 'グループを作成', new_group_path, class: 'nav-link text-muted' %>
+  </li>
+  <li class="nav-item">
+    <%= link_to 'グループ一覧', groups_path, class: 'nav-link text-muted' %>
+  </li>
+</ul>
+
 <%= render 'index',users: @users %>
 </div>
 

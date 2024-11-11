@@ -1,0 +1,44 @@
+<div class='container px-5 px-sm-0'>
+<div class="row">
+  <div class="col-md-3">
+    <h2>User info</h2>
+    <%= render 'users/info', user: current_user %>
+  </div>
+
+  <div class="col-md-8 offset-md-1">
+  <h2>グループ編集画面</h2>
+  <ul class="nav nav-tabs">
+  <li class="nav-item">
+    <%= link_to 'グループを作成', new_group_path, class: 'nav-link text-muted' %>
+  </li>
+  <li class="nav-item">
+    <%= link_to 'グループ一覧', groups_path, class: 'nav-link text-muted' %>
+  </li>
+</ul>
+
+  <% if @group.owner == current_user %>
+    <%= form_with model: @group, local: true do |form| %>
+      <% if @group.errors.any? %>
+        <div class="alert alert-danger">
+          <h4>エラーがあります:</h4>
+          <ul>
+            <% @group.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+  
+      <div class="form-group">
+        <%= form.label :name, 'グループ名' %>
+        <%= form.text_field :name, class: 'form-control', value: @group.name %>
+      </div>
+  
+      <%= form.submit '保存', class: 'btn btn-success' %>
+    <% end %>
+  <% else %>
+    <p>このグループの編集権限がありません。</p>
+  <% end %>
+  
+</div>
+</div>

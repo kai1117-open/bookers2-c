@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_11_10_235059) do
+ActiveRecord::Schema.define(version: 2024_11_11_141550) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -67,11 +67,38 @@ ActiveRecord::Schema.define(version: 2024_11_10_235059) do
     t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
+  create_table "events", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.integer "group_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.text "body"
+    t.index ["group_id"], name: "index_events_on_group_id"
+  end
+
   create_table "favorites", force: :cascade do |t|
     t.integer "user_id"
     t.integer "book_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "group_memberships", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "group_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["group_id"], name: "index_group_memberships_on_group_id"
+    t.index ["user_id"], name: "index_group_memberships_on_user_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
+    t.integer "owner_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["owner_id"], name: "index_groups_on_owner_id"
   end
 
   create_table "impressions", force: :cascade do |t|
@@ -168,6 +195,10 @@ ActiveRecord::Schema.define(version: 2024_11_10_235059) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "chats", "rooms"
   add_foreign_key "chats", "users"
+  add_foreign_key "events", "groups"
+  add_foreign_key "group_memberships", "groups"
+  add_foreign_key "group_memberships", "users"
+  add_foreign_key "groups", "users", column: "owner_id"
   add_foreign_key "taggings", "tags"
   add_foreign_key "user_rooms", "rooms"
   add_foreign_key "user_rooms", "users"

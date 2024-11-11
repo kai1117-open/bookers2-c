@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'group_memberships/create'
+  get 'group_memberships/destroy'
   get 'ratings/create'
   root "homes#top"
  get "home/about"=>"homes#about"
@@ -25,6 +27,11 @@ end
   end
   end
   
+  resources :groups do
+    resources :events, only: [:new, :create, :index] # 必要に応じて他のアクションも追加
+end
+
+  resources :group_memberships
   resources :chats, only: [:show, :create, :destroy]
   
   resource :favorite, only: [:create, :destroy]
